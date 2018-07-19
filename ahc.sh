@@ -37,6 +37,8 @@ addVH() {
         echo "PATH_DOMAIN=$PATH_DOMAIN"
         exit 0
     fi
+    mkdir ${PATH_DOMAIN}
+    chmod 777 ${PATH_DOMAIN}
     if [[ ${VERSION} == 'nginx-apache-new-php5.6' ]]; then
         addVHNginx 'new' ${DOMAIN}
         addVHApache 'new5.6' ${DOMAIN}
@@ -61,9 +63,6 @@ addVHApache() {
     DOMAIN=$2
     TEMPLATE="$PATH_TEMPLATE_APACHE/$TEMPLATE_FILE$TEMPLATE_POSTFIX"
     CONFIG="$PATH_APACHE/$DOMAIN$PATH_TEMPLATE_APACHE_POSTFIX"
-    PATH_DOMAIN="$PATH_WWW/$DOMAIN"
-    mkdir ${PATH_DOMAIN}
-    chmod 777 ${PATH_DOMAIN}
     cp ${TEMPLATE} ${CONFIG}
     sed -i -e "s/DOMAIN/$DOMAIN/g" ${CONFIG}
     chmod 777 ${CONFIG}
@@ -77,9 +76,6 @@ addVHNginx() {
     TEMPLATE="$PATH_TEMPLATE_NGINX/$TEMPLATE_FILE$TEMPLATE_POSTFIX"
     CONFIG="$PATH_NGINX/$DOMAIN$PATH_TEMPLATE_NGINX_POSTFIX"
     CONFIG_ENABLED="$PATH_NGINX_ENABLED/$DOMAIN$PATH_TEMPLATE_NGINX_POSTFIX"
-    PATH_DOMAIN="$PATH_WWW/$DOMAIN"
-    mkdir ${PATH_DOMAIN}
-    chmod 777 ${PATH_DOMAIN}
     cp ${TEMPLATE} ${CONFIG}
     sed -i -e "s/DOMAIN/$DOMAIN/g" ${CONFIG}
     chmod 777 ${CONFIG}
