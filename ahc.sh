@@ -31,6 +31,12 @@ PATH_NGINX_ENABLED="/etc/nginx/sites-enabled"
 addVH() {
     DOMAIN=$1
     VERSION=$2
+    PATH_DOMAIN="$PATH_WWW/$DOMAIN"
+    if  [ -d ${PATH_DOMAIN} ]; then
+        echo 'directory exist'
+        echo "PATH_DOMAIN=$PATH_DOMAIN"
+        exit 0
+    fi
     if [[ ${VERSION} == 'nginx-apache-new-php5.6' ]]; then
         addVHNginx 'new' ${DOMAIN}
         addVHApache 'new5.6' ${DOMAIN}
@@ -56,15 +62,10 @@ addVHApache() {
     TEMPLATE="$PATH_TEMPLATE_APACHE/$TEMPLATE_FILE$TEMPLATE_POSTFIX"
     CONFIG="$PATH_APACHE/$DOMAIN$PATH_TEMPLATE_APACHE_POSTFIX"
     PATH_DOMAIN="$PATH_WWW/$DOMAIN"
-    if  [ -d ${PATH_DOMAIN} ]; then
-        echo 'directory exist'
-        echo "PATH_DOMAIN=$PATH_DOMAIN"
-        exit 0
-    fi
     mkdir ${PATH_DOMAIN}
     chmod 777 ${PATH_DOMAIN}
     cp ${TEMPLATE} ${CONFIG}
-    sed -i -e "s/DOMAIN/$DOMAIN/g" ${DOMAIN}
+    sed -i -e "s/DOMAIN/$DOMAIN/g" ${CONFIG}
     chmod 777 ${CONFIG}
     a2ensite "$DOMAIN$PATH_TEMPLATE_APACHE_POSTFIX"
     systemctl apache2 restart
@@ -77,15 +78,10 @@ addVHNginx() {
     CONFIG="$PATH_NGINX/$DOMAIN$PATH_TEMPLATE_NGINX_POSTFIX"
     CONFIG_ENABLED="$PATH_NGINX_ENABLED/$DOMAIN$PATH_TEMPLATE_NGINX_POSTFIX"
     PATH_DOMAIN="$PATH_WWW/$DOMAIN"
-    if  [ -d ${PATH_DOMAIN} ]; then
-        echo 'directory exist'
-        echo "PATH_DOMAIN=$PATH_DOMAIN"
-        exit 0
-    fi
     mkdir ${PATH_DOMAIN}
     chmod 777 ${PATH_DOMAIN}
     cp ${TEMPLATE} ${CONFIG}
-    sed -i -e "s/DOMAIN/$DOMAIN/g" ${DOMAIN}
+    sed -i -e "s/DOMAIN/$DOMAIN/g" ${CONFIG}
     chmod 777 ${CONFIG}
     ln -s ${CONFIG} ${CONFIG_ENABLED}
     systemctl nginx restart
