@@ -21,6 +21,7 @@ TEMPLATE_POSTFIX=".template"
 PATH_TEMPLATE_NGINX_POSTFIX=".conf"
 PATH_TEMPLATE_APACHE_POSTFIX=".conf"
 PATH_APACHE="/etc/apache2/sites-available"
+PATH_APACHE_ENABLED="/etc/apache2/sites-enabled"
 PATH_NGINX="/etc/nginx/sites-available"
 PATH_NGINX_ENABLED="/etc/nginx/sites-enabled"
 
@@ -63,11 +64,12 @@ addVHApache() {
     DOMAIN=$2
     TEMPLATE="$PATH_TEMPLATE_APACHE/$TEMPLATE_FILE$TEMPLATE_POSTFIX"
     CONFIG="$PATH_APACHE/$DOMAIN$PATH_TEMPLATE_APACHE_POSTFIX"
+    CONFIG_ENABLED="$PATH_APACHE_ENABLED/$DOMAIN$PATH_TEMPLATE_APACHE_POSTFIX"
     cp ${TEMPLATE} ${CONFIG}
     sed -i -e "s/DOMAIN/$DOMAIN/g" ${CONFIG}
     chmod 777 ${CONFIG}
-    a2ensite "$DOMAIN$PATH_TEMPLATE_APACHE_POSTFIX"
-    systemctl apache2 restart
+    ln -s ${CONFIG} ${CONFIG_ENABLED}
+    systemctl apache2 reload
 }
 
 addVHNginx() {
@@ -80,7 +82,7 @@ addVHNginx() {
     sed -i -e "s/DOMAIN/$DOMAIN/g" ${CONFIG}
     chmod 777 ${CONFIG}
     ln -s ${CONFIG} ${CONFIG_ENABLED}
-    systemctl nginx restart
+    systemctl nginx reload
 }
 
 
@@ -131,6 +133,7 @@ debug() {
     echo "PATH_TEMPLATE_POSTFIX=$PATH_TEMPLATE_APACHE_POSTFIX";
     echo "PATH_TEMPLATE_NGINX_POSTFIX=$PATH_TEMPLATE_NGINX_POSTFIX";
     echo "PATH_APACHE=$PATH_APACHE";
+    echo "PATH_APACHE_ENABLED=$PATH_APACHE_ENABLED";
     echo "PATH_NGINX=$PATH_NGINX";
     echo "PATH_NGINX_ENABLED=$PATH_NGINX_ENABLED";
 }
