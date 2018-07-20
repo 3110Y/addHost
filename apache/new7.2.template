@@ -4,7 +4,7 @@
   DocumentRoot /var/www/DOMAIN/public
   AddHandler fcgid-script .php
   FcgidWrapper /usr/bin/php-cgi7.2  .php
-  <Directory /var/www/DOMAIN>
+  <Directory /var/www/DOMAIN/public>
     Options +ExecCGI
     AllowOverride All
     Require all granted
@@ -20,7 +20,7 @@
   DocumentRoot /var/www/DOMAIN/public
   AddHandler fcgid-script .php
   FcgidWrapper /usr/bin/php-cgi7.2  .php
-  <Directory /var/www/DOMAIN>
+  <Directory /var/www/DOMAIN/public>
     Options +ExecCGI
     AllowOverride All
     Require all granted
