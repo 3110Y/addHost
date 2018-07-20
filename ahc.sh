@@ -69,7 +69,7 @@ addVHApache() {
     sed -i -e "s/DOMAIN/$DOMAIN/g" ${CONFIG}
     chmod 777 ${CONFIG}
     ln -s ${CONFIG} ${CONFIG_ENABLED}
-    systemctl apache2 reload
+    sudo systemctl apache2 restart
 }
 
 addVHNginx() {
@@ -82,7 +82,7 @@ addVHNginx() {
     sed -i -e "s/DOMAIN/$DOMAIN/g" ${CONFIG}
     chmod 777 ${CONFIG}
     ln -s ${CONFIG} ${CONFIG_ENABLED}
-    systemctl nginx reload
+    sudo systemctl nginx restart
 }
 
 
@@ -114,7 +114,6 @@ helper() {
     echo "VERSION: your version "
     echo "example: nginx-apache-php7.2 "
     echo "variants: "
-    echo "nginx-apache-new-php5.6 "
     echo "nginx-apache-new-php7.2 "
     echo "nginx-apache-old-php5.6 "
     echo "nginx-apache-old-php7.2 "

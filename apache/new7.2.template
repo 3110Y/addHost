@@ -1,0 +1,36 @@
+ <VirtualHost *:81>
+  ServerAdmin gaevoy@localhost
+  ServerName DOMAIN
+  DocumentRoot /var/www/DOMAIN/public
+  AddHandler fcgid-script .php
+  FcgidWrapper /usr/bin/php-cgi7.2  .php
+  <Directory /var/www/DOMAIN>
+    Options +ExecCGI
+    AllowOverride All
+    Require all granted
+  </Directory>
+  ErrorLog /var/log/apache2/error.log
+  LogLevel debug
+  CustomLog /var/log/apache2/access.log combined
+  ServerSignature On
+</VirtualHost>
+<VirtualHost *:8443>
+  ServerAdmin gaevoy@localhost
+  ServerName DOMAIN
+  DocumentRoot /var/www/DOMAIN/public
+  AddHandler fcgid-script .php
+  FcgidWrapper /usr/bin/php-cgi7.2  .php
+  <Directory /var/www/DOMAIN>
+    Options +ExecCGI
+    AllowOverride All
+    Require all granted
+  </Directory>
+  ErrorLog /var/log/apache2/error.log
+  LogLevel debug
+  CustomLog /var/log/apache2/access.log combined
+  ServerSignature On
+</VirtualHost>
+
+
+
+
